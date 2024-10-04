@@ -55,10 +55,17 @@ export function formatMarkdownTooltip(content: string): MarkdownString {
 export const mdDocSelector = [
   { language: 'markdown', scheme: 'file' },
   { language: 'markdown', scheme: 'untitled' },
+  { language: 'quarto', scheme: 'file' },
+  { language: 'quarto', scheme: 'untitled' },
 ];
 
 export function isMdEditor(editor: TextEditor) {
-  return editor && editor.document && editor.document.languageId === 'markdown';
+  return (
+    editor &&
+    editor.document &&
+    (editor.document.languageId === 'markdown' ||
+      editor.document.languageId === 'quarto')
+  );
 }
 
 export function findSelectionContent(): SelectionInfo | undefined {

@@ -1,6 +1,12 @@
 import { Resource, ResourceLink } from './note';
 import { URI } from './uri';
-import { isAbsolute, getExtension, changeExtension } from '../utils/path';
+import {
+  isAbsolute,
+  getExtension,
+  changeExtension,
+  getDirectory,
+  getName,
+} from '../utils/path';
 import { isSome } from '../utils';
 import { Emitter } from '../common/event';
 import { ResourceProvider } from './provider';
@@ -77,7 +83,8 @@ export class FoamWorkspace implements IDisposable {
         : undefined;
     const resources: Resource[] = [];
     for (const key of this._resources.keys()) {
-      if (key.endsWith(mdNeedle) || key.endsWith(needle)) {
+      const normalised_key = normalize(getDirectory(key) + '/' + getName(key));
+      if (key.endsWith(mdNeedle) || normalised_key.endsWith(needle)) {
         resources.push(this._resources.get(normalize(key)));
       }
     }
